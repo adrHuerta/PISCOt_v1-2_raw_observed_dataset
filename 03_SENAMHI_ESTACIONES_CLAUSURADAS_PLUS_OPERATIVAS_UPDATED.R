@@ -23,7 +23,7 @@ rbind(oper,
 
 
 # reading data to update to 2020 ( 2) updating data ) from VOZ Y DATA (Kris data)
-path_3 = "/home/adrian/Documents/Repos/PISCOt_raw_observed_dataset/raw/SENAMHI/ESTACIONES OPERATIVAS/TO_UPDATE_2020/DATOS DE PP"
+path_3 = "raw_2021/SENAMHI/ESTACIONES OPERATIVAS/TO_UPDATE_2020/DATOS DE PP"
 
 # reading data for each variable: 
 c("2018", "2019", "2020") %>%
@@ -68,14 +68,14 @@ c("2018", "2019", "2020") %>%
   do.call(rbind, .) %>%
   .[order(.$COD), ] -> tn_data
 
-c("2018", "2019", "2020") %>%
+c("2018", "2019","2020") %>%
   lapply(function(x){
     exp = file.path(path_3, x) %>%
       dir(full.names = T) 
   }) %>% unlist() %>%
   lapply(function(x){
     
-    tn = readxl::read_xlsx(x, 1, skip = 6) # SHEET 1: PP
+    tn = readxl::read_xlsx(x, 2, skip = 6) # SHEET 1: PP
     tn_exp = data.frame(tn[, c("COD", "AÑO", "MES")], tn[, 14:dim(tn)[2]])
     reshape2::melt(tn_exp, 
                    id = c("COD", "AÑO", "MES"), 
@@ -205,7 +205,7 @@ xyz_all <- xyz_all %>%
 rownames(xyz_all) <- NULL
 
 # 2019
-xyz_senamhi_2020 <- readxl::read_xlsx("/home/adrian/Documents/Repos/PISCOt_raw_observed_dataset/raw/SENAMHI/LISTA_DE_ESTACIONES/Lista de Observadores.xlsx",
+xyz_senamhi_2020 <- readxl::read_xlsx("raw_2021/SENAMHI/LISTA_DE_ESTACIONES/Lista de Observadores.xlsx",
                                       "Hoja1") %>%
   subset(CATEGORIA == "CONVENCIONAL") %>%
   transform(CODIGO = as.numeric(CODIGO)) %>%

@@ -53,6 +53,11 @@ all_files$LINK %>%
 # deleting rclimdex files that dont have tmax neither tmin
 all_files_0 = all_files[-match(names(to_not_use), as.character(all_files$ID)), ]
 
+# NEW 2021: DELETING FILES: PE105091, PE107092, PE107058 (PRACTICALLY 0 DATA)
+del_new_files <- match(c("PE105091", "PE107092", "PE107058"), as.character(all_files_0$ID))
+all_files_0 <- all_files_0[-del_new_files,]
+row.names(all_files_0) <- NULL
+
 # saving XYZ 
 all_files_0 %>%
   .[,-7] %>%

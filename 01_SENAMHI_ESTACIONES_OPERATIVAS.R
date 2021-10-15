@@ -1,11 +1,11 @@
 rm(list = ls()); `%>%` = magrittr::`%>%` 
 
 # getting path files
-path_0 = "./raw/SENAMHI/ESTACIONES OPERATIVAS/NACIONAL/SET 335 ESTACIONES CON VOZ Y DATA"
+path_0 = "./raw_2021/SENAMHI/ESTACIONES OPERATIVAS/NACIONAL/SET 335 ESTACIONES CON VOZ Y DATA"
 files_in_path_0 = dir(path = path_0, full.names = T, pattern = ".txt")
 
 # getting path files
-path_1 = "./raw/SENAMHI/ESTACIONES OPERATIVAS/NACIONAL/SET 371 ESTACIONES QC"
+path_1 = "./raw_2021/SENAMHI/ESTACIONES OPERATIVAS/NACIONAL/SET 371 ESTACIONES QC"
 files_in_path_1 = dir(path = path_1, full.names = T, pattern = ".txt")
 
 # as some stations are in the one folder but not in the other, it is selected for a simple addition
@@ -26,7 +26,7 @@ c(files_in_path_0,
 files_in_path_names = files_in_path %>% sapply(function(x) strsplit(x, "/") %>% unlist() %>% .[7] %>% substr(., 1, 6)) %>% as.vector()
 
 # reading list of stations 
-xyz = readxl::read_xlsx("/home/adrian/Documents/Repos/PISCOt_raw_observed_dataset/raw/SENAMHI/ESTACIONES OPERATIVAS/lista_archivos_actu.V2.xlsx",
+xyz = readxl::read_xlsx("raw_2021/SENAMHI/ESTACIONES OPERATIVAS/lista_archivos_actu.V2.xlsx",
                         "REGIONES ALT") %>%
   transform(NOMBRE = gsub(" ", "_", NOMBRE)) %>%
   .[c("CODIGO_ANT", "CODIGO_NUEV", "NOMBRE", "LONGITUD", "LATITUD", "ALTITUD")] %>%

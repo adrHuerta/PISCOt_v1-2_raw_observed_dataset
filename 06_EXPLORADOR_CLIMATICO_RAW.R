@@ -1,15 +1,15 @@
 rm(list = ls()); `%>%` = magrittr::`%>%`
 
 # same order in both folders
-chile_tmax <- dir("./raw/EXPLORADOR_CLIMATICO/CHILE/TMAX", full.names = TRUE)
-chile_tmin <- dir("./raw/EXPLORADOR_CLIMATICO/CHILE/TMIN", full.names = TRUE)
+chile_tmax <- dir("./raw_2021/EXPLORADOR_CLIMATICO/CHILE/TMAX", full.names = TRUE)
+chile_tmin <- dir("./raw_2021/EXPLORADOR_CLIMATICO/CHILE/TMIN", full.names = TRUE)
 
 mapply(function(xmax, ymin){
   
   file_name = strsplit(xmax, " ") %>% sapply(function(y) y[4])
-  file_lat = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
-  file_lon = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
-  file_alt = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[13], "º")[[1]][1])
+  file_lat = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[10], "º")[[1]][1])
+  file_lon = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
+  file_alt = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
   #file_alt
   
   # creating xyz data
@@ -22,9 +22,9 @@ mapply(function(xmax, ymin){
   
   
   file_name = strsplit(ymin, " ") %>% sapply(function(y) y[4])
-  file_lat = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
-  file_lon = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
-  file_alt = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[13], "º")[[1]][1])
+  file_lat = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[10], "º")[[1]][1])
+  file_lon = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
+  file_alt = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
 
   xyz_min = data.frame(ID = paste("CH", formatC(nchar(file_name) + abs(as.numeric(file_alt)), 5, flag = 0), sep = ""),
                        NAM = toupper(file_name),
@@ -37,10 +37,12 @@ mapply(function(xmax, ymin){
   xyz = if( identical(xyz_max, xyz_min) ) xyz_max
   #xyz
   
-  xmax = read.csv(xmax, header = TRUE)[, 1:4]
+  # xmax = read.csv(xmax, header = TRUE)[, 1:4]
+  xmax = readxl::read_xlsx(xmax, 1)
   colnames(xmax) = c("y", "m", "d", "tx")
   
-  ymin = read.csv(ymin, header = TRUE)[, 1:4]
+  # ymin = read.csv(ymin, header = TRUE)[, 1:4]
+  ymin = readxl::read_xlsx(ymin, 1)
   colnames(ymin) = c("y", "m", "d", "tn")
   
   rclimdex_data = merge(xmax, ymin, by = c("y", "m", "d"), all = TRUE) # all = TRUE to preserve all the data
@@ -60,15 +62,15 @@ mapply(function(xmax, ymin){
   SIMPLIFY = FALSE) -> resultados_data_chile
 
 # same order in both folders # similar to the previous one
-bolivia_tmax <- dir("./raw/EXPLORADOR_CLIMATICO/BOLIVIA/TMAX", full.names = TRUE)
-bolivia_tmin <- dir("./raw/EXPLORADOR_CLIMATICO/BOLIVIA/TMIN", full.names = TRUE)
+bolivia_tmax <- dir("./raw_2021/EXPLORADOR_CLIMATICO/BOLIVIA/TMAX", full.names = TRUE)
+bolivia_tmin <- dir("./raw_2021/EXPLORADOR_CLIMATICO/BOLIVIA/TMIN", full.names = TRUE)
 
 mapply(function(xmax, ymin){
   
   file_name = strsplit(xmax, " ") %>% sapply(function(y) y[4])
-  file_lat = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
-  file_lon = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
-  file_alt = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[13], "º")[[1]][1])
+  file_lat = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[10], "º")[[1]][1])
+  file_lon = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
+  file_alt = strsplit(xmax, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
   #file_alt
   
   xyz_max = data.frame(ID = paste("BO", formatC(nchar(file_name) + abs(as.numeric(file_alt)), 5, flag = 0), sep = ""),
@@ -80,9 +82,9 @@ mapply(function(xmax, ymin){
   
   
   file_name = strsplit(ymin, " ") %>% sapply(function(y) y[4])
-  file_lat = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
-  file_lon = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
-  file_alt = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[13], "º")[[1]][1])
+  file_lat = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[10], "º")[[1]][1])
+  file_lon = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[11], "º")[[1]][1])
+  file_alt = strsplit(ymin, " ") %>% sapply(function(y) strsplit(y[12], "º")[[1]][1])
   
   xyz_min = data.frame(ID = paste("BO", formatC(nchar(file_name) + abs(as.numeric(file_alt)), 5, flag = 0), sep = ""),
                        NAM = toupper(file_name),
@@ -92,23 +94,25 @@ mapply(function(xmax, ymin){
                        SRC = "EXPLORADOR_CLIMATICO")
   
   xyz = if( identical(xyz_max, xyz_min) ) xyz_max
-  #xyz
+  # xyz
   
-  xmax = read.csv(xmax, header = TRUE)[, 1:4]
+  # xmax = read.csv(xmax, header = TRUE)[, 1:4]
+  xmax = readxl::read_xlsx(xmax, 1)
   colnames(xmax) = c("y", "m", "d", "tx")
-  
-  ymin = read.csv(ymin, header = TRUE)[, 1:4]
+
+  # ymin = read.csv(ymin, header = TRUE)[, 1:4]
+  ymin = readxl::read_xlsx(ymin, 1)
   colnames(ymin) = c("y", "m", "d", "tn")
-  
+
   rclimdex_data = merge(xmax, ymin, by = c("y", "m", "d"), all = TRUE) # all = TRUE to preserve all the data
   rclimdex_data["prec"] = NA
-  
+
   rownames(xyz) = NULL
-  
+
   list(xyz = xyz,
        data_format = rclimdex_data[, c("y", "m", "d", "prec", "tx", "tn")],
        patch = file.path(".", "processed", "EXPLORADOR_CLIMATICO", "rclimdex_format", paste("BO", formatC(nchar(file_name) + abs(as.numeric(file_alt)), 5, flag = 0), ".txt", sep = "")))
-  
+
 },
 x = bolivia_tmax,
 y = bolivia_tmin,

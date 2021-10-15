@@ -2,7 +2,7 @@ rm(list = ls()); `%>%` = magrittr::`%>%`
 
 # reading xyz data
 # preserving only needed data
-xyz <- readxl::read_xlsx("./raw/IDEAM/INFORMACION/coordenadas.xlsx", 
+xyz <- readxl::read_xlsx("./raw_2021/IDEAM/INFORMACION/coordenadas.xlsx", 
                          sheet = "TMIN_TOTAL") %>%
   .[426:428, c("NOMBRE", "LONGITUD", "LATITUD", "ALTITUD", "TRABAJO")] %>%
   setNames(c("NAM", "LON", "LAT", "ALT", "SRC")) %>%
@@ -15,8 +15,8 @@ xyz$ID <- c(44015060, 48015050, 47075010)
 # ACUEDUCTO_MOCOA, AEROPUERTO_VASQUEZ_COBO, LA_CHORRERA
 
 # path of files
-tn_data <- dir("./raw/IDEAM/DATA", full.names = TRUE)[1:3]
-tx_data <- dir("./raw/IDEAM/DATA", full.names = TRUE)[4:6]
+tn_data <- dir("./raw_2021/IDEAM/DATA", full.names = TRUE)[1:3]
+tx_data <- dir("./raw_2021/IDEAM/DATA", full.names = TRUE)[4:6]
 
 # reading data and converting to rclimdex format, everthing as a list
 mapply(function(x, y){

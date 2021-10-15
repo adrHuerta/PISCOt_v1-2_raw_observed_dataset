@@ -1,14 +1,14 @@
 rm(list = ls()); `%>%` = magrittr::`%>%`
 
 # reading xyz data
-xyz <- readxl::read_xlsx("./raw/INAMHI/datos_ecuador.xlsx", sheet = "coordenadas",
+xyz <- readxl::read_xlsx("./raw_2021/INAMHI/datos_ecuador.xlsx", sheet = "coordenadas",
                   range = cellranger::cell_cols("H:L")) %>%
   .[-1, ] %>%
   setNames(c("ID0", "NAM", "LAT", "LON", "ALT")) %>%
   dplyr::mutate(SRC = "INAMHI",
                 NAM = gsub(" ", "_", NAM),
                 ID = formatC(gsub("M", "", ID0) %>% as.numeric(), 5, flag = 0),
-                PATH = file.path(".", "raw", "INAMHI", "diarios_ecuador", 
+                PATH = file.path(".", "raw_2021", "INAMHI", "diarios_ecuador", 
                                  paste("ho", 
                                        formatC(gsub("M", "", ID0) %>% as.numeric(), 7, flag = 0),
                                        ".txt",

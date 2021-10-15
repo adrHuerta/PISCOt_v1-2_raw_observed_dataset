@@ -2,11 +2,11 @@ rm(list = ls()); `%>%` = magrittr::`%>%`
 
 # raw files reading 
 
-"./raw/INMET" %>%
+"./raw_2021/INMET" %>%
   dir(full.names = T) %>%
   .[1:5] %>%
   lapply(., function(x){
-    read.table(x, skip = 3, nrows = 5, header = F, sep = ":") -> res
+    read.table(x, skip = 0, nrows = 9, header = F, sep = ":") -> res
     
     data.frame(ID = paste("BR", formatC(as.numeric(sub(".", "", res$V2[2])), 5, flag = 0), sep = ""),
                NAM = gsub(" ", "_", sub(".", "", res$V2[1])),
@@ -27,25 +27,27 @@ xyz_data %>%
 
 # same order XYZ and files in folder!
   
-"./raw/INMET" %>%
+"./raw_2021/INMET" %>%
   dir(full.names = T) %>%
   .[1:5] %>%
   lapply(., function(x){
     
-    read.table(x, skip = 19, header = T, sep = ";") %>%
-      .[, -c(1,6)] -> res
+    read.table(x, skip = 10, header = T, sep = ";") %>%
+      .[, c(1:3)] -> res
     
-    res$Data = as.Date(res$Data, "%d/%m/%Y")
+    res$Data = as.Date(res$Data.Medicao, "%Y-%m-%d")
 
-    res_tx = subset(res, Hora != 1200) %>% .[, -c(2,4)]
-    res_tn = subset(res, Hora == 1200) %>% .[, -c(2,3)]
+    # res_tx = subset(res, Hora != 1200) %>% .[, -c(2,4)]
+    res_tx = res %>% .[, -c(1,3)]
+    # res_tn = subset(res, Hora == 1200) %>% .[, -c(2,3)]
+    res_tn = res %>% .[, -c(1,2)]
     
     merge(res_tx, res_tn, by = "Data", all = TRUE) %>% # all = TRUE to preserve all the data
       transform(y = format(.$Data, "%Y"),
                 m = format(.$Data, "%m"),
                 d = format(.$Data, "%d"),
                 pre = NA) %>%
-      .[, c("y", "m", "d", "pre", "TempMaxima", "TempMinima")]
+      .[, c("y", "m", "d", "pre", "TEMPERATURA.MAXIMA..DIARIA..C.", "TEMPERATURA.MINIMA..DIARIA..C.")]
     
   }) -> data_xyz
 
